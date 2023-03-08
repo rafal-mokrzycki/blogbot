@@ -15,7 +15,7 @@
     "python.linting.lintOnSave": true,
     "python.linting.maxNumberOfProblems": 100,
     "editor.formatOnSave": true,
-    "python.sortImports.args": [
+    "isort.args": [
         "-rc",
         "-sp isort.cfg"
     ],
