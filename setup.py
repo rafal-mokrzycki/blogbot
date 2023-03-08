@@ -22,6 +22,6 @@ setuptools.setup(
         "License :: Other/Proprietary License",
         "Operating System :: OS Independent",
     ],
-    keywords=["GCP", "GCS", "bot", "blog", "LinkedIn"]
+    keywords=["GCP", "GCS", "bot", "blog", "LinkedIn"],
     python_requires=">=3.10",
 )
