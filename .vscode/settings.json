@@ -9,11 +9,11 @@
     ],
     "editor.renderWhitespace": "all",
     "python.linting.flake8Args": [
-        "--max-line-length=90"
+        "--max-line-length=120"
     ],
     "files.autoSaveDelay": 5000,
     "python.linting.lintOnSave": true,
-    "python.linting.maxNumberOfProblems": 10,
+    "python.linting.maxNumberOfProblems": 100,
     "editor.formatOnSave": true,
     "python.sortImports.args": [
         "-rc",
@@ -21,7 +21,7 @@
     ],
     "python.formatting.provider": "black",
     "python.formatting.blackArgs": [
-        "--line-length=90"
+        "--line-length=120"
     ],
     "[python]": {
         "editor.codeActionsOnSave": {
