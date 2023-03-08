@@ -1,5 +1,3 @@
-# template-repo
-
 Blogbot is a web app connected do GCP that enables collecting headlines or articles from web and post summaries on linkedin.
 
 It consists of several modules:
