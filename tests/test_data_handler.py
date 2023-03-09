@@ -18,10 +18,24 @@ import pytest
 from scripts.data_handler import Transformer
 
 
-def test_transform():
-    string = Transformer.transform("Today the weather is beautiful.")[0]["generated_text"]
-    print(string)
-    assert string.startswith("Today the weather is beautiful.")
+@pytest.fixture(scope="module")
+def input_string():
+    yield "Today the weather is beautiful."
+
+
+def test_transform_correct_start(input_string):
+    string = Transformer.transform(input_string, temperature=0.6, max_length=100, n_sentences=1)[0]["generated_text"]
+    assert string.startswith(input_string)
+
+
+def test_transform_correct_length(input_string):
+    string = Transformer.transform(input_string, temperature=0.0001, max_length=100, n_sentences=1)[0]["generated_text"]
+    assert len(string.split(" ")) == 81
+
+
+def test_transform_correct_n_sentences(input_string):
+    sentences = Transformer.transform(input_string, temperature=0.6, max_length=100, n_sentences=5)
+    assert len(sentences) == 5
 
 
 def test_transform_wrong_input():
