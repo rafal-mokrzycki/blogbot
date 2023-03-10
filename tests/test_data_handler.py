@@ -36,15 +36,3 @@ def test_transform_correct_length(input_string):
 def test_transform_correct_n_sentences(input_string):
     sentences = Transformer.transform(input_string, temperature=0.6, max_length=100, n_sentences=5)
     assert len(sentences) == 5
-
-
-def test_transform_wrong_input():
-    pass
-
-
-def test_transform_wrong_max_length():
-    pass
-
-
-def test_transform_wrong_n_sentences():
-    pass
