@@ -2,20 +2,22 @@
 Functions to access GCP Storage.
 """
 
+import time
 from datetime import datetime
 
-import numpy as np
 from google.cloud import storage
-from validators import is_valid_bucket_bucket_name
+
+from scripts.validators import is_valid_bucket_name
 
 
-class GSC_Connector:
+class GCS_Connector:
     def __init__(self) -> None:
+        # TODO: adjust to project needs.
         pass
 
     def get_project_id(self) -> str:
         """Return project name from client
-        google.storage.client object."""
+        google.storage.client object"""
         pass
 
     def write_file_to_bucket(
@@ -41,7 +43,7 @@ class GSC_Connector:
         blob = bucket.blob(file_name)
         blob.upload_from_string(input_text)
 
-    def create_unique_bucket_name(client: storage.Client) -> str:
+    def create_unique_bucket_name(self, client: storage.Client) -> str:
         """Creates an unique bucket name
         based on the client account email.
 
@@ -63,7 +65,7 @@ class GSC_Connector:
             service_account + "-" + datetime.now().strftime("%Y%m%d%H%M%S%f")
         )
 
-        if is_valid_bucket_bucket_name(name):
+        if is_valid_bucket_name(name):
             return name
         else:
             raise NameError(
@@ -71,20 +73,22 @@ class GSC_Connector:
                     (see: https://cloud.google.com/storage/docs/buckets#naming"
             )
 
-    def create_unique_blob_name() -> str:
+    def create_unique_blob_name(self) -> str:
         """Creates an unique blob name
         based on the timestamp.
 
         Returns:
             str: blob name in format '20230311124542597264.txt'
         """
+        time.sleep(0.1)
         return datetime.now().strftime("%Y%m%d%H%M%S%f") + ".txt"
 
-    def create_bucket_class_location(bucket_name):
+    def create_bucket_class_location(self, bucket_name):
         """
         Create a new bucket in the US region with the coldline storage
         class
         """
+        # TODO: adjust to project needs.
         # bucket_name = "your-new-bucket-name"
 
         storage_client = storage.Client()
@@ -100,8 +104,9 @@ class GSC_Connector:
         )
         return new_bucket
 
-    def delete_blob(bucket_name, blob_name):
-        """Deletes a blob from the bucket."""
+    def delete_blob(self, bucket_name, blob_name):
+        """Deletes a blob from the bucket"""
+        # TODO: adjust to project needs.
         # bucket_name = "your-bucket-name"
         # blob_name = "your-object-name"
 

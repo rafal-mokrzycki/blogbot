@@ -1,7 +1,7 @@
 import re
 
 
-def is_valid_bucket_bucket_name(bucket_name: str) -> bool:
+def is_valid_bucket_name(bucket_name: str) -> bool:
     """_summary_
 
     Args:
