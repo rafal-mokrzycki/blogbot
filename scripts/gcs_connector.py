@@ -11,7 +11,8 @@ class GSC_Connector:
         pass
 
     def get_project_id(self) -> str:
-        """Return project name from client google.storage.client object."""
+        """Return project name from client
+        google.storage.client object."""
         pass
 
     def write_file_to_bucket(self, bucket: str, text: str) -> None:
@@ -63,10 +64,12 @@ class GSC_Connector:
         blob = bucket.blob(blob_name)
         generation_match_precondition = None
 
-        # Optional: set a generation-match precondition to avoid potential race conditions
-        # and data corruptions. The request to delete is aborted if the object's
-        # generation number does not match your precondition.
-        blob.reload()  # Fetch blob metadata to use in generation_match_precondition.
+        # Optional: set a generation-match precondition to avoid
+        # potential race conditions and data corruptions. The request
+        # to delete is aborted if the object's generation number
+        # does not match your precondition.
+        blob.reload()
+        # Fetch blob metadata to use in generation_match_precondition.
         generation_match_precondition = blob.generation
 
         blob.delete(if_generation_match=generation_match_precondition)

@@ -6,7 +6,15 @@ class Collector:
 
 
 class Transformer:
-    def transform(input: str, temperature=0.6, max_length: int = 256, n_sentences: int = 1):
+    def __init__():
+        pass
+
+    def transform(
+        input: str,
+        temperature=0.6,
+        max_length: int = 256,
+        n_sentences: int = 1,
+    ):
         """Transforms an input sentence into a longer paragraph.
 
         Args:
@@ -17,7 +25,9 @@ class Transformer:
         Returns:
             list: _description_
         """
-        generator = pipeline("text-generation", model="EleutherAI/gpt-neo-125M")
+        generator = pipeline(
+            "text-generation", model="EleutherAI/gpt-neo-125M"
+        )
         return generator(
             input,
             do_sample=True,
