@@ -16,6 +16,6 @@ def is_valid_bucket_name(bucket_name: str) -> bool:
     if len(bucket_name) > MAX_LENGTH or len(bucket_name) < MIN_LENGTH:
         return False
     if re.fullmatch(forbidden_pattern, bucket_name):
-        return
+        return False
     valid_pattern = r"^[a-z0-9][a-z0-9_\-]*[a-z0-9]$"
     return bool(re.fullmatch(valid_pattern, bucket_name))
