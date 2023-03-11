@@ -27,5 +27,16 @@ def test_get_project_id(gcs):
 
 
 def test_write_file_to_bucket(gcs):
-    gcs.write_file_to_bucket("input text", "tmp-bucket", "tmp-file.txt")
+    bucket_name = "tmp-bucket"
+    file_name = "tmp-file.txt"
+    gcs.write_file_to_bucket("input text", bucket_name, file_name)
     assert "tmp-file.txt" in gcs.list_blobs("tmp-bucket")
+    gcs.delete_blob(bucket_name, file_name)
+
+
+def test_list_blobs(gcs):
+    bucket_name = "tmp-bucket"
+    file_name = "tmp-file.txt"
+    gcs.write_file_to_bucket("input text", bucket_name, file_name)
+    assert len(gcs.list_blobs("tmp-bucket")) == 1
+    gcs.delete_blob(bucket_name, file_name)
