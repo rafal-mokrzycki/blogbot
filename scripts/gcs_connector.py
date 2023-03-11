@@ -149,3 +149,8 @@ class GCS_Connector:
         blob.delete(if_generation_match=generation_match_precondition)
 
         print(f"Blob {blob_name} deleted.")
+
+    def list_blobs(self, bucket_name):
+        """Lists all the blobs in the bucket."""
+        blobs = self.client.list_blobs(bucket_name)
+        return [blob.name for blob in blobs]
