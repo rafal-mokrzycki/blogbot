@@ -18,8 +18,28 @@ class GSC_Connector:
         google.storage.client object."""
         pass
 
-    def write_file_to_bucket(self, bucket: str, text: str) -> None:
-        pass
+    def write_file_to_bucket(
+        self, input_text: str, bucket_name: str = None, file_name: str = None
+    ) -> None:
+        """Writes a string into a .txt file in a given bucket.
+
+        Args:
+            input_text (str): a blog post (output of
+            Transformer.transform method)
+            bucket_name (str, optional): user's bucket name.
+            Defaults to None.
+            file_name (str, optional): .txt file name. Defaults to None.
+        """
+        if bucket_name is None:
+            bucket_name = self.create_unique_bucket_name()
+            # TODO: check if a bucket for that client exists,
+            # if not, create it
+        if file_name is None:
+            file_name = self.create_unique_blob_name()
+        storage_client = storage.Client()
+        bucket = storage_client.bucket(bucket_name)
+        blob = bucket.blob(file_name)
+        blob.upload_from_string(input_text)
 
     def create_unique_bucket_name(client: storage.Client) -> str:
         """Creates an unique bucket name
