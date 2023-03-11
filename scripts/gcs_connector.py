@@ -41,9 +41,8 @@ class GCS_Connector:
         self.log = logging.getLogger(f"GCS_Connector {self.project_id}")
 
     def get_project_id(self) -> str:
-        """Return project name from client
-        google.storage.client object"""
-        pass
+        """Return project name from client google.storage.client object."""
+        return self.client.project
 
     def write_file_to_bucket(
         self, input_text: str, bucket_name: str = None, file_name: str = None
