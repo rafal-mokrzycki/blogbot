@@ -67,12 +67,9 @@ class GCS_Connector:
         blob = bucket.blob(file_name)
         blob.upload_from_string(input_text)
 
-    def create_unique_bucket_name(self, client: storage.Client) -> str:
+    def create_unique_bucket_name(self) -> str:
         """Creates an unique bucket name
         based on the client account email.
-
-        Args:
-            client (storage.Client): _description_
 
         Raises:
             NameError: if bucket name does not follow Google requirements
@@ -139,3 +136,8 @@ class GCS_Connector:
         """Lists all the blobs in the bucket."""
         blobs = self.client.list_blobs(bucket_name)
         return [blob.name for blob in blobs]
+
+    def list_buckets(self):
+        """Lists all buckets."""
+        buckets = self.client.list_buckets()
+        return [bucket.name for bucket in buckets]
