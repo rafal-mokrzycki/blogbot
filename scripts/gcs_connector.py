@@ -4,6 +4,7 @@ Functions to access GCP Storage.
 
 from datetime import datetime
 
+import numpy as np
 from google.cloud import storage
 from validators import is_valid_bucket_bucket_name
 
@@ -39,9 +40,14 @@ class GSC_Connector:
                     (see: https://cloud.google.com/storage/docs/buckets#naming"
             )
 
-    def create_unique_blob_name():
-        """Per written file"""
-        pass
+    def create_unique_blob_name() -> str:
+        """Creates an unique blob name
+        based on the timestamp.
+
+        Returns:
+            str: blob name in format '20230311124542597264.txt'
+        """
+        return datetime.now().strftime("%Y%m%d%H%M%S%f") + ".txt"
 
     def create_bucket_class_location(bucket_name):
         """
