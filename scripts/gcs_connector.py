@@ -21,8 +21,19 @@ class GSC_Connector:
     def write_file_to_bucket(self, bucket: str, text: str) -> None:
         pass
 
-    def create_unique_bucket_name(client):
-        """Per client."""
+    def create_unique_bucket_name(client: storage.Client) -> str:
+        """Creates an unique bucket name
+        based on the client account email.
+
+        Args:
+            client (storage.Client): _description_
+
+        Raises:
+            NameError: if bucket name does not follow Google requirements
+
+        Returns:
+            str: unique bucket name
+        """
         service_account = (
             client.get_service_account_email()
             .replace("@", "-")
