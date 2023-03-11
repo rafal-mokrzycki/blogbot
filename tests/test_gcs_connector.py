@@ -16,7 +16,10 @@ def gcs():
 
 
 def test_create_unique_bucket_name(gcs):
-    pass
+    unique_names = []
+    for _ in range(3):
+        unique_names.append(gcs.create_unique_bucket_name())
+    assert len(unique_names) == len(set(unique_names))
 
 
 def test_create_unique_blob_name(gcs):
@@ -30,21 +33,25 @@ def test_get_project_id(gcs):
     assert gcs.get_project_id() == "thinking-glass-380312"
 
 
-def test_write_file_to_bucket(gcs):
+def test_write_blob_to_bucket(gcs):
     bucket_name = "tmp-bucket"
-    file_name = "tmp-file.txt"
-    gcs.write_file_to_bucket("input text", bucket_name, file_name)
-    assert "tmp-file.txt" in gcs.list_blobs("tmp-bucket")
-    gcs.delete_blob(bucket_name, file_name)
+    blob_name = "tmp-blob.txt"
+    gcs.write_blob_to_bucket("input text", bucket_name, blob_name)
+    assert "tmp-blob.txt" in gcs.list_blobs("tmp-bucket")
+    gcs.delete_blob(bucket_name, blob_name)
 
 
 def test_list_blobs(gcs):
     bucket_name = "tmp-bucket"
-    file_name = "tmp-file.txt"
-    gcs.write_file_to_bucket("input text", bucket_name, file_name)
+    blob_name = "tmp-blob.txt"
+    gcs.write_blob_to_bucket("input text", bucket_name, blob_name)
     assert len(gcs.list_blobs("tmp-bucket")) == 1
-    gcs.delete_blob(bucket_name, file_name)
+    gcs.delete_blob(bucket_name, blob_name)
 
 
 def test_delete_blob(gcs):
-    pass
+    bucket_name = "tmp-bucket"
+    blob_name = "tmp-blob.txt"
+    gcs.write_blob_to_bucket("input text", bucket_name, blob_name)
+    gcs.delete_blob(bucket_name, blob_name)
+    assert blob_name not in gcs.list_blobs("tmp-bucket")

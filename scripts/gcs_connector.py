@@ -44,8 +44,8 @@ class GCS_Connector:
         """Return project name from client google.storage.client object."""
         return self.client.project
 
-    def write_file_to_bucket(
-        self, input_text: str, bucket_name: str = None, file_name: str = None
+    def write_blob_to_bucket(
+        self, input_text: str, bucket_name: str = None, blob_name: str = None
     ) -> None:
         """Writes a string into a .txt file in a given bucket.
 
@@ -54,17 +54,17 @@ class GCS_Connector:
             Transformer.transform method)
             bucket_name (str, optional): user's bucket name.
             Defaults to None.
-            file_name (str, optional): .txt file name. Defaults to None.
+            blob_name (str, optional): .txt file name. Defaults to None.
         """
         if bucket_name is None:
             bucket_name = self.create_unique_bucket_name()
             # TODO: check if a bucket for that client exists,
             # if not, create it
-        if file_name is None:
-            file_name = self.create_unique_blob_name()
+        if blob_name is None:
+            blob_name = self.create_unique_blob_name()
         storage_client = storage.Client()
         bucket = storage_client.bucket(bucket_name)
-        blob = bucket.blob(file_name)
+        blob = bucket.blob(blob_name)
         blob.upload_from_string(input_text)
 
     def create_unique_bucket_name(self) -> str:
@@ -77,6 +77,7 @@ class GCS_Connector:
         Returns:
             str: unique bucket name
         """
+        time.sleep(0.1)
         service_account = (
             self.client.get_service_account_email()
             .replace(".", "-")
