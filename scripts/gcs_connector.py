@@ -2,18 +2,43 @@
 Functions to access GCP Storage.
 """
 
+import logging
 import time
 from datetime import datetime
 
 from google.cloud import storage
+from google.oauth2 import service_account
 
 from scripts.validators import is_valid_bucket_name
 
 
 class GCS_Connector:
-    def __init__(self) -> None:
-        # TODO: adjust to project needs.
-        pass
+    def __init__(
+        self,
+        project_id: None | str = None,
+        key_path: None | str = None,
+    ) -> None:
+        if project_id is None and key_path is None:
+            self.client = storage.Client()
+            self.project_id = self.get_project_id()
+        else:
+            try:
+                self.credentials = (
+                    service_account.Credentials.from_service_account_file(
+                        key_path
+                    )
+                )
+                self.client = storage.Client(
+                    project_id, credentials=self.credentials
+                )
+            except FileNotFoundError:
+                self.log = logging.getLogger("GCS_Connector")  # Generic log
+                self.log.error("Keyfile not found.")
+                self.project_id = None
+                return
+            else:
+                self.project_id = self.get_project_id()
+        self.log = logging.getLogger(f"GCS_Connector {self.project_id}")
 
     def get_project_id(self) -> str:
         """Return project name from client
@@ -57,9 +82,7 @@ class GCS_Connector:
             str: unique bucket name
         """
         service_account = (
-            client.get_service_account_email()
-            .replace("@", "-")
-            .replace(".", "-")
+            client.get_service_account_email().replace(".", "-").split("@")[0]
         )
         name = (
             service_account + "-" + datetime.now().strftime("%Y%m%d%H%M%S%f")
@@ -69,7 +92,7 @@ class GCS_Connector:
             return name
         else:
             raise NameError(
-                "Bucket name does not follow Google requirements \
+                f"Bucket name '{name}' does not follow Google requirements \
                     (see: https://cloud.google.com/storage/docs/buckets#naming"
             )
 
