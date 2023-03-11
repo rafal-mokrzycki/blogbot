@@ -2,6 +2,8 @@
 Functions to access GCP Storage.
 """
 
+from datetime import datetime
+
 from google.cloud import storage
 from validators import is_valid_bucket_bucket_name
 
@@ -20,7 +22,15 @@ class GSC_Connector:
 
     def create_unique_bucket_name(client):
         """Per client."""
-        name = ""
+        service_account = (
+            client.get_service_account_email()
+            .replace("@", "-")
+            .replace(".", "-")
+        )
+        name = (
+            service_account + "-" + datetime.now().strftime("%Y%m%d%H%M%S%f")
+        )
+
         if is_valid_bucket_bucket_name(name):
             return name
         else:
