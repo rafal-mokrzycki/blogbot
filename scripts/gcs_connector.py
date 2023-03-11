@@ -78,7 +78,9 @@ class GCS_Connector:
             str: unique bucket name
         """
         service_account = (
-            client.get_service_account_email().replace(".", "-").split("@")[0]
+            self.client.get_service_account_email()
+            .replace(".", "-")
+            .split("@")[0]
         )
         name = (
             service_account + "-" + datetime.now().strftime("%Y%m%d%H%M%S%f")
