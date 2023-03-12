@@ -6,10 +6,12 @@ import logging
 import time
 from datetime import datetime
 
-from google.cloud import storage
+from google.cloud import exceptions, storage
 from google.oauth2 import service_account
 
 from scripts.validators import is_valid_bucket_name
+
+log = logging.getLogger(__name__)
 
 
 class GCS_Connector:
@@ -32,13 +34,11 @@ class GCS_Connector:
                     project_id, credentials=self.credentials
                 )
             except FileNotFoundError:
-                self.log = logging.getLogger("GCS_Connector")  # Generic log
-                self.log.error("Keyfile not found.")
+                log.error("Keyfile not found.")
                 self.project_id = None
                 return
             else:
                 self.project_id = self.get_project_id()
-        self.log = logging.getLogger(f"GCS_Connector {self.project_id}")
 
     def get_project_id(self) -> str:
         """Return project name from client google.storage.client object."""
@@ -54,7 +54,6 @@ class GCS_Connector:
         Returns:
             str: unique bucket name
         """
-        time.sleep(0.1)
         service_account = (
             self.client.get_service_account_email()
             .replace(".", "-")
@@ -90,10 +89,15 @@ class GCS_Connector:
         Returns:
             _type_: new bucket
         """
-        bucket = self.client.bucket(bucket_name)
-        bucket.storage_class = storage_class
-        new_bucket = self.client.create_bucket(bucket, location=location)
-        return new_bucket
+        try:
+            bucket = self.client.bucket(bucket_name)
+            bucket.storage_class = storage_class
+            self.client.create_bucket(bucket_name, location=location)
+            print("Bucket {} created".format(bucket_name))
+        except BaseException:
+            # If the bucket already exists, ignore the 409 HTTP error and
+            # continue with the rest of the program.
+            print("Bucket {} already exists.".format(bucket_name))
 
     def list_buckets(self):
         """Lists all buckets."""
@@ -107,8 +111,14 @@ class GCS_Connector:
         Args:
             bucket_name (str): bucket to be deleted.
         """
-        bucket = self.client.get_bucket(bucket_name)
-        bucket.delete()
+        try:
+            bucket = self.client.get_bucket(bucket_name)
+            bucket.delete()
+        except exceptions.NotFound:
+            log.error(f"Bucket {bucket_name} not found.")
+        except exceptions.Conflict:
+            for blob in self.list_blobs(bucket_name):
+                self.delete_blob(bucket_name, blob)
 
     def create_unique_blob_name(self) -> str:
         """Creates an unique blob name
@@ -152,7 +162,5 @@ class GCS_Connector:
         """Deletes a blob from the bucket"""
         bucket = self.client.bucket(bucket_name)
         blob = bucket.blob(blob_name)
-        self.log.warning(
-            f"Object {blob_name} deleted in bucket: {bucket_name}"
-        )
+        log.warning(f"Blob {blob_name} deleted in bucket: {bucket_name}.")
         blob.delete()
