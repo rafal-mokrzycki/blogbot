@@ -13,3 +13,14 @@ d. whether they contain photos or not
 e. where to post the blog posts (LinkedIn, other)
 f. how often to gather the info (once a day, once every 6 hrs.)
 g. how often to post and how many posts should appear
+
+
+To run:
+```bash
+uvicorn app.main:app
+```
+
+To run with changes update:
+```bash
+uvicorn app.main:app --reload
+```
