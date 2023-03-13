@@ -53,5 +53,3 @@ def test_delete_blob(gcs):
     gcs.write_blob_to_bucket("input text", TEST_BUCKET_NAME, TEST_BLOB_NAME)
     gcs.delete_blob(TEST_BUCKET_NAME, TEST_BLOB_NAME)
     assert TEST_BLOB_NAME not in gcs.list_blobs("tmp-bucket")
-
-
