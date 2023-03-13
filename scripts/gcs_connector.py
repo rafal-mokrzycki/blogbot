@@ -44,6 +44,9 @@ class GCS_Connector:
         """Return project name from client google.storage.client object."""
         return self.client.project
 
+    def get_user_bucket(self) -> str:
+        return storage.Client().__str__()
+
     def create_unique_bucket_name(self) -> str:
         """Creates an unique bucket name
         based on the client account email.
@@ -93,11 +96,11 @@ class GCS_Connector:
             bucket = self.client.bucket(bucket_name)
             bucket.storage_class = storage_class
             self.client.create_bucket(bucket_name, location=location)
-            print("Bucket {} created".format(bucket_name))
+            log.info("Bucket {} created".format(bucket_name))
         except BaseException:
             # If the bucket already exists, ignore the 409 HTTP error and
             # continue with the rest of the program.
-            print("Bucket {} already exists.".format(bucket_name))
+            log.warning("Bucket {} already exists.".format(bucket_name))
 
     def list_buckets(self):
         """Lists all buckets."""
