@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from transformers import pipeline
 
 from scripts.gcs_connector import GCS_Connector
