@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+        <script
+            src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+        <title>Welcome</title>
+    </head>
+    <body>
+        <div class="ui container">
+            <h1>
+                Register:
+            </h1>
+            <form>
+                <div class="container">
+
+                    <label for="email"><b>Email</b></label>
+                    <input type="text" placeholder="Enter Email" name="email"
+                        id="email" required>
+
+                    <label for="password"><b>Password</b></label>
+                    <input type="password" placeholder="Enter Password"
+                        name="password"
+                        id="password" required>
+
+                    <label for="password-repeat"><b>Repeat Password</b></label>
+                    <input type="password" placeholder="Repeat Password"
+                        name="password-repeat" id="password-repeat" required>
+                    <label for="firstname"><b>First Name</b></label>
+                    <input type="text" placeholder="First Name"
+                        name="firstname" id="firstname">
+
+                    <label for="lastname"><b>Last Name</b></label>
+                    <input type="text" placeholder="Last Name"
+                        name="lastname" id="lastname">
+
+                    <label for="plan"><b>Choose plan:</b></label>
+                    <select name="plan" id="plan">
+                        <option value="free" selected>free</option>
+                        <option value="premium">premium</option>
+                        <option value="business">business</option>
+                    </select>
+
+                    <button type="submit" class="registerbtn">Register</button>
+                </div>
+                <div class="container signin">
+                    <p>Already have an account? <a href="#">Sign in</a>.</p>
+                </div>
+            </form>
+        </div>
+
+    </body>
+</html>
