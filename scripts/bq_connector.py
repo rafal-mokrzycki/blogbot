@@ -16,14 +16,22 @@ PROJECT_ID = "thinking-glass-380312"
 
 class ConnectBigQuery:
     def __init__(self, project_id=None, key_file=""):
+        """
+        _summary_
 
+        Args:
+            project_id (_type_, optional): _description_. Defaults to None.
+            key_file (str, optional): _description_. Defaults to "".
+        """
         self.credentials = (
             service_account.Credentials.from_service_account_file(key_file)
         )
         self.client = bigquery.Client(project_id, credentials=self.credentials)
         self.project_id = PROJECT_ID  # self.get_project_id()
 
-    def if_tbl_exists(self, dataset_id="blogbot", table_id="users"):
+    def if_tbl_exists(
+        self, dataset_id: str = "blogbot", table_id: str = "users"
+    ):
         """Return true if table with this name exists."""
         try:
             table_ref = f"{self.project_id}.{dataset_id}.{table_id}"
@@ -33,8 +41,15 @@ class ConnectBigQuery:
             return False
 
     def create_table_if_not_exists(
-        self, dataset_id="blogbot", table_id="users"
+        self, dataset_id: str = "blogbot", table_id: str = "users"
     ):
+        """
+        _summary_
+
+        Args:
+            dataset_id (str, optional): _description_. Defaults to "blogbot".
+            table_id (str, optional): _description_. Defaults to "users".
+        """
         if not self.if_tbl_exists(dataset_id=dataset_id, table_id=table_id):
             schema = [
                 bigquery.SchemaField("username", "STRING", mode="REQUIRED"),
@@ -53,7 +68,19 @@ class ConnectBigQuery:
             )
 
     def insert_rows_to_table(
-        self, dictionary, dataset_id="blogbot", table_id="users"
+        self, dictionary, dataset_id: str = "blogbot", table_id: str = "users"
     ):
+        """
+        _summary_
+
+        Args:
+            dictionary (_type_): _description_
+            dataset_id (str, optional): _description_. Defaults to "blogbot".
+            table_id (str, optional): _description_. Defaults to "users".
+        """
         self.client.insert_rows(table_id, dictionary)
-    def get_data_from_table
+
+    def get_data_from_table(
+        key: str, dataset_id: str = "blogbot", table_id: str = "users"
+    ):
+        pass
