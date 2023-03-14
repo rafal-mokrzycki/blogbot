@@ -9,7 +9,8 @@ log = logging.getLogger(__name__)
 class UserBase(BaseModel):
     username: str
     email: EmailStr
-    full_name: str | None = None
+    first_name: str | None = None
+    last_name: str | None = None
 
 
 class UserIn(UserBase):
