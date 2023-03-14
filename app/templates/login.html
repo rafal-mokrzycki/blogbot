@@ -1,36 +1,32 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+        <script
+            src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+        <title>Welcome</title>
+    </head>
     <body>
-        <form method="post">
-            <div class="row">
+        <div class="ui container">
+            <h1>
+                Register:
+            </h1>
+            <form action="/login" method="post">
+                <p>
+                    <p><label for="">Email</label></p>
+                    <input type="email" name="username" value="{{ username }}"
+                        required>
+                </p>
+                <p>
+                    <p><label for="">Password</label></p>
+                    <input type="password" name="password" value="{{ password
+                        }}" required>
+                </p>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
 
-                <div class="feature-box col-sm-12">
-                    <input type="email" placeholder="E-mail" name="email"
-                        value="{{
-                        request.form.email }}">
-                </div>
-                <div class="feature-box col-sm-12">
-                    <input type="password" placeholder="Password"
-                        name="password"
-                        value="{{
-                        request.form.password }}">
-                </div>
-                <div class="feature-box col-sm-12">
-                    <input class="btn btn-default" type="submit" name="login"
-                        value="Login">
-                </div>
-
-                <div class="feature-box col-sm-12">
-                    <a href="{{ url_for('auth.register') }}">Don't have an
-                        account?</a>
-                </div>
-                <div class="feature-box col-sm-12">
-                    <a href="{{ url_for('auth.reset_password') }}">Forgot your
-                        password?</a>
-                </div>
-
-            </div>
-
-        </form>
     </body>
 </html>
