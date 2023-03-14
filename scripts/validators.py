@@ -2,7 +2,8 @@ import re
 
 
 def is_valid_bucket_name(bucket_name: str) -> bool:
-    """_summary_
+    """
+    _summary_
 
     Args:
         bucket_name (str): _description_
