@@ -8,6 +8,9 @@ import pytest
 
 from scripts.gcs_connector import GCS_Connector
 
+TEST_BUCKET_NAME = "this_is_a_bucket"
+TEST_BLOB_NAME = "this_is_a_file.txt"
+
 
 @pytest.fixture(scope="module")
 def gcs():
@@ -22,7 +25,7 @@ def test_create_unique_bucket_name(gcs):
     assert len(unique_names) == len(set(unique_names))
 
 
-def test_create_unique_blob_name(gcs):
+def test_create_unique_test_blob_name(gcs):
     unique_names = []
     for _ in range(3):
         unique_names.append(gcs.create_unique_blob_name())
@@ -34,24 +37,19 @@ def test_get_project_id(gcs):
 
 
 def test_write_blob_to_bucket(gcs):
-    bucket_name = "tmp-bucket"
-    blob_name = "tmp-blob.txt"
-    gcs.write_blob_to_bucket("input text", bucket_name, blob_name)
-    assert "tmp-blob.txt" in gcs.list_blobs("tmp-bucket")
-    gcs.delete_blob(bucket_name, blob_name)
+    gcs.create_new_bucket(TEST_BUCKET_NAME)
+    gcs.write_blob_to_bucket("input text", TEST_BUCKET_NAME, TEST_BLOB_NAME)
+    assert TEST_BLOB_NAME in gcs.list_blobs(TEST_BUCKET_NAME)
+    gcs.delete_blob(TEST_BUCKET_NAME, TEST_BLOB_NAME)
 
 
 def test_list_blobs(gcs):
-    bucket_name = "tmp-bucket"
-    blob_name = "tmp-blob.txt"
-    gcs.write_blob_to_bucket("input text", bucket_name, blob_name)
-    assert len(gcs.list_blobs("tmp-bucket")) == 1
-    gcs.delete_blob(bucket_name, blob_name)
+    gcs.write_blob_to_bucket("input text", TEST_BUCKET_NAME, TEST_BLOB_NAME)
+    assert len(gcs.list_blobs(TEST_BUCKET_NAME)) == 1
+    gcs.delete_blob(TEST_BUCKET_NAME, TEST_BLOB_NAME)
 
 
 def test_delete_blob(gcs):
-    bucket_name = "tmp-bucket"
-    blob_name = "tmp-blob.txt"
-    gcs.write_blob_to_bucket("input text", bucket_name, blob_name)
-    gcs.delete_blob(bucket_name, blob_name)
-    assert blob_name not in gcs.list_blobs("tmp-bucket")
+    gcs.write_blob_to_bucket("input text", TEST_BUCKET_NAME, TEST_BLOB_NAME)
+    gcs.delete_blob(TEST_BUCKET_NAME, TEST_BLOB_NAME)
+    assert TEST_BLOB_NAME not in gcs.list_blobs("tmp-bucket")
