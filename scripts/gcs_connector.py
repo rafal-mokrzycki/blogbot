@@ -21,6 +21,13 @@ class GCS_Connector:
         project_id: None | str = None,
         key_path: None | str = None,
     ) -> None:
+        """
+        _summary_
+
+        Args:
+            project_id (None | str, optional): _description_. Defaults to None.
+            key_path (None | str, optional): _description_. Defaults to None.
+        """
         if project_id is None and key_path is None:
             self.client = storage.Client()
             self.project_id = self.get_project_id()
@@ -42,14 +49,17 @@ class GCS_Connector:
                 self.project_id = self.get_project_id()
 
     def get_project_id(self) -> str:
-        """Return project name from client google.storage.client object."""
+        """
+        Returns project name from client google.storage.client object.
+        """
         return self.client.project
 
     def get_user_bucket(self) -> str:
         return storage.Client().__str__()
 
     def create_unique_bucket_name(self) -> str:
-        """Creates an unique bucket name
+        """
+        Creates an unique bucket name
         based on the client account email.
 
         Raises:
@@ -81,7 +91,8 @@ class GCS_Connector:
         storage_class: str = "STANDARD",
         location: str = "us",
     ):
-        """Creates a new bucket.
+        """
+        Creates a new bucket.
         Used when a new client registers to the app.
 
         Args:
@@ -104,12 +115,15 @@ class GCS_Connector:
             log.warning("Bucket {} already exists.".format(bucket_name))
 
     def list_buckets(self):
-        """Lists all buckets."""
+        """
+        Lists all buckets.
+        """
         buckets = self.client.list_buckets()
         return [bucket.name for bucket in buckets]
 
     def delete_bucket(self, bucket_name: str) -> None:
-        """Deletes a bucket.
+        """
+        Deletes a bucket.
         Used when a client closes their account.
 
         Args:
@@ -125,7 +139,8 @@ class GCS_Connector:
                 self.delete_blob(bucket_name, blob)
 
     def create_unique_blob_name(self) -> str:
-        """Creates an unique blob name
+        """
+        Creates an unique blob name
         based on the timestamp.
 
         Returns:
@@ -137,7 +152,8 @@ class GCS_Connector:
     def write_blob_to_bucket(
         self, input_text: str, bucket_name: str = None, blob_name: str = None
     ) -> None:
-        """Writes a string into a .txt file in a given bucket.
+        """
+        Writes a string into a .txt file in a given bucket.
 
         Args:
             input_text (str): a blog post (output of
@@ -158,12 +174,16 @@ class GCS_Connector:
         blob.upload_from_string(input_text)
 
     def list_blobs(self, bucket_name):
-        """Lists all the blobs in the bucket."""
+        """
+        Lists all the blobs in the bucket.
+        """
         blobs = self.client.list_blobs(bucket_name)
         return [blob.name for blob in blobs]
 
     def delete_blob(self, bucket_name, blob_name):
-        """Deletes a blob from the bucket"""
+        """
+        Deletes a blob from the bucket.
+        """
         bucket = self.client.bucket(bucket_name)
         blob = bucket.blob(blob_name)
         log.warning(f"Blob {blob_name} deleted in bucket: {bucket_name}.")
