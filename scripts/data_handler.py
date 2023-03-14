@@ -18,7 +18,8 @@ class Transformer:
         max_length: int = 256,
         n_sentences: int = 1,
     ):
-        """Transforms an input sentence into a longer paragraph.
+        """
+        Transforms an input sentence into a longer paragraph.
 
         Args:
             input (str): _description_
