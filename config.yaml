@@ -1,0 +1,28 @@
+AUDIT_LOGS_TABLE: idm007project01-12345.sample.audit_logs
+
+
+GET_ALL_AUDIT_LOGS: SELECT
+                      app_name,
+                      userid,
+                      more_info,
+                      FORMAT_DATETIME("%b-%d-%y %H:%M:%S",
+                      timestamp) AS event_date,
+                      action
+                      FROM
+                      `idm007project01-12345.sample.audit_logs`
+                      WHERE
+                      timestamp BETWEEN DATETIME_SUB(current_datetime( ),
+                      INTERVAL 10 DAY)
+                      AND current_datetime();
+
+
+GET_APP_AUDIT_LOGS: SELECT
+                      app_name,
+                      userid,
+                      more_info,
+                      FORMAT_DATETIME("%b-%d-%y %H:%M:%S",
+                      timestamp) AS event_date,
+                      action
+                      FROM
+                      `idm007project01-12345.sample.audit_logs`
+                      WHERE app_name = @app_name
