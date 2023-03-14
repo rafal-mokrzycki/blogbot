@@ -4,18 +4,10 @@ Functions to access GCP BigQuery.
 """
 
 import logging
-import pathlib
-import time
-from datetime import datetime
-from time import sleep
 
-import pandas
-from google.cloud import bigquery, exceptions, storage
+from google.cloud import bigquery
 from google.cloud.exceptions import NotFound
 from google.oauth2 import service_account
-from pandas_gbq import gbq
-
-from scripts.validators import is_valid_bucket_name
 
 log = logging.getLogger(__name__)
 
@@ -36,7 +28,6 @@ class ConnectBigQuery:
         try:
             table_ref = f"{self.project_id}.{dataset_id}.{table_id}"
             self.client.get_table(table_ref)
-            # print('table found', table_id)
             return True
         except NotFound:
             return False
@@ -44,7 +35,7 @@ class ConnectBigQuery:
     def create_table_if_not_exists(
         self, dataset_id="blogbot", table_id="users"
     ):
-        if self.if_tbl_exists(dataset_id=dataset_id, table_id=table_id):
+        if not self.if_tbl_exists(dataset_id=dataset_id, table_id=table_id):
             schema = [
                 bigquery.SchemaField("username", "STRING", mode="REQUIRED"),
                 bigquery.SchemaField("email", "STRING", mode="REQUIRED"),
@@ -52,11 +43,15 @@ class ConnectBigQuery:
                 bigquery.SchemaField("last_name", "STRING", mode="NULLABLE"),
                 bigquery.SchemaField("password", "STRING", mode="REQUIRED"),
             ]
-
             table = bigquery.Table(table_id, schema=schema)
-            table = self.client.create_table(table)  # Make an API request.
+            table = self.client.create_table(table)
             log.info(
                 "Created table {}.{}.{}".format(
                     table.project, table.dataset_id, table.table_id
                 )
             )
+
+    def insert_rows_to_table(
+        self, dictionary, dataset_id="blogbot", table_id="users"
+    ):
+        self.client.insert_rows(table_id, dictionary)
