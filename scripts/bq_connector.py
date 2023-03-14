@@ -42,6 +42,7 @@ class ConnectBigQuery:
                 bigquery.SchemaField("first_name", "STRING", mode="NULLABLE"),
                 bigquery.SchemaField("last_name", "STRING", mode="NULLABLE"),
                 bigquery.SchemaField("password", "STRING", mode="REQUIRED"),
+                bigquery.SchemaField("plan", "STRING", mode="REQUIRED"),
             ]
             table = bigquery.Table(table_id, schema=schema)
             table = self.client.create_table(table)
@@ -55,3 +56,4 @@ class ConnectBigQuery:
         self, dictionary, dataset_id="blogbot", table_id="users"
     ):
         self.client.insert_rows(table_id, dictionary)
+    def get_data_from_table
