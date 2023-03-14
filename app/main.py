@@ -1,41 +1,35 @@
 import datetime as dt
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Dict, List, Optional
 
 import console
-from api.settings import Settings
 from fastapi import (
     APIRouter,
     Depends,
     FastAPI,
-    Form,
     HTTPException,
-    Query,
     Request,
     Response,
     status,
 )
 from fastapi.openapi.models import OAuthFlows as OAuthFlowsModel
 from fastapi.responses import HTMLResponse, RedirectResponse
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.security import (
+    OAuth2,
+    OAuth2PasswordBearer,
+    OAuth2PasswordRequestForm,
+)
 from fastapi.security.utils import get_authorization_scheme_param
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from jose import JWTError, jwt
 from passlib.handlers.sha2_crypt import sha512_crypt as crypto
-from pydantic import BaseModel
 
-from app.api.models import (
-    UserBase,
-    UserIn,
-    UserInDB,
-    UserOut,
-    get_user,
-    save_user,
-)
+from app.api.models import UserBase, get_user
+from app.api.settings import Settings
 
 BASE_PATH = Path(__file__).resolve().parent
-templates = Jinja2Templates(directory=str(BASE_PATH / "templates"))
+templates = Jinja2Templates(directory=str(BASE_PATH / "app/templates"))
 app = FastAPI()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 api_router = APIRouter()
@@ -47,7 +41,7 @@ app.mount(
     name="json",
 )
 
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory="app/templates")
 settings = Settings()
 
 
@@ -91,9 +85,7 @@ async def login_post(request: Request):
 
 
 @app.get("/private", response_class=HTMLResponse)
-def private(
-    request: Request, user: User = Depends(get_current_user_from_token)
-):
+def private(request: Request, user: UserBase):
     context = {"user": user, "request": request}
     return templates.TemplateResponse("private.html", context)
 
@@ -145,7 +137,7 @@ class OAuth2PasswordBearer(OAuth2):
         if not authorization or scheme.lower() != "bearer":
             if self.auto_error:
                 raise HTTPException(
-                    status_code=401,
+                    status_code=status.HTTP_401_UNAUTHORIZED,
                     detail="Not authenticated",
                     headers={"WWW-Authenticate": "Bearer"},
                 )
@@ -176,7 +168,7 @@ class LoginForm:
         return False
 
 
-def authenticate_user(username: str, plain_password: str) -> User:
+def authenticate_user(username: str, plain_password: str) -> UserBase:
     user = get_user(username)
     if not user:
         return False
@@ -197,7 +189,7 @@ def create_access_token(data: Dict) -> str:
     return encoded_jwt
 
 
-def decode_token(token: str) -> User:
+def decode_token(token: str) -> UserBase:
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -218,7 +210,9 @@ def decode_token(token: str) -> User:
     return user
 
 
-def get_current_user_from_token(token: str = Depends(oauth2_scheme)) -> User:
+def get_current_user_from_token(
+    token: str = Depends(oauth2_scheme),
+) -> UserBase:
     """
     Get the current user from the cookies in a request.
 
@@ -229,7 +223,7 @@ def get_current_user_from_token(token: str = Depends(oauth2_scheme)) -> User:
     return user
 
 
-def get_current_user_from_cookie(request: Request) -> User:
+def get_current_user_from_cookie(request: Request) -> UserBase:
     """
     Get the current user from the cookies in a request.
 
@@ -256,13 +250,13 @@ def get_current_user_from_cookie(request: Request) -> User:
 #     return {"the_token": token}
 
 
-# @app.post("/user", response_model=UserOut)
-# async def create_user(user_in: UserIn):
+# @app.post("/user", response_model=UserBaseOut)
+# async def create_user(user_in: UserBaseIn):
 #     user_saved = save_user(user_in)
 #     return user_saved
 
 
-# @app.get("/user", response_model=UserOut)
-# async def show_user(user_out: UserOut):
+# @app.get("/user", response_model=UserBaseOut)
+# async def show_user(user_out: UserBaseOut):
 #     user_saved = get_user(user_out)
 #     return user_saved
