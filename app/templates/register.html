@@ -25,14 +25,16 @@
                             id="email" required>
                     </p>
                     <p>
-                        <label for="password"><b>Password</b></label> </p>
+                        <label for="password"><b>Password</b><span
+                                class="required">*</span></label> </p>
                     <p>
                         <input type="password" placeholder="Enter Password"
                             name="password"
                             id="password" required>
                     </p>
                     <p>
-                        <label for="password-repeat"><b>Repeat Password</b></label>
+                        <label for="password-repeat"><b>Repeat Password</b><span
+                                class="required">*</span></label>
                     </p>
                     <p>
                         <input type="password" placeholder="Repeat Password"
@@ -52,9 +54,10 @@
                             name="lastname" id="lastname">
                     </p>
                     <p>
-                        <label for="plan"><b>Choose plan:</b></label> </p>
+                        <label for="plan"><b>Choose plan:</b><span
+                                class="required">*</span></label> </p>
                     <p>
-                        <select name="plan" id="plan">
+                        <select name="plan" id="plan" required>
                             <option value="free" selected>free</option>
                             <option value="premium">premium</option>
                             <option value="business">business</option>
