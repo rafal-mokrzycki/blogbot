@@ -10,7 +10,7 @@ def is_valid_bucket_name(bucket_name: str) -> bool:
 
     Returns:
         bool: _description_
-    s"""
+    """
     MAX_LENGTH = 63
     MIN_LENGTH = 3
     forbidden_pattern = r"^g[oO0]{2}g(le)?[a-z0-9_\-]*[a-z0-9]?$"

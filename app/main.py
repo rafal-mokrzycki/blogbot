@@ -58,7 +58,15 @@ def index(request: Request):
     return templates.TemplateResponse("index.html", context)
 
 
-@app.get("/login", response_class=HTMLResponse)
+@app.get("/auth/register", response_class=HTMLResponse)
+def register_get(request: Request):
+    context = {
+        "request": request,
+    }
+    return templates.TemplateResponse("register.html", context)
+
+
+@app.get("/auth/login", response_class=HTMLResponse)
 def login_get(request: Request):
     context = {
         "request": request,
@@ -66,7 +74,7 @@ def login_get(request: Request):
     return templates.TemplateResponse("login.html", context)
 
 
-@app.post("/login", response_class=HTMLResponse)
+@app.post("/auth/login", response_class=HTMLResponse)
 async def login_post(request: Request):
     form = LoginForm(request)
     await form.load_data()

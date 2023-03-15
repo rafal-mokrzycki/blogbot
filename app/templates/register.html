@@ -15,38 +15,56 @@
             </h1>
             <form>
                 <div class="container">
+                    <p>
 
-                    <label for="email"><b>Email</b></label>
-                    <input type="text" placeholder="Enter Email" name="email"
-                        id="email" required>
-
-                    <label for="password"><b>Password</b></label>
-                    <input type="password" placeholder="Enter Password"
-                        name="password"
-                        id="password" required>
-
-                    <label for="password-repeat"><b>Repeat Password</b></label>
-                    <input type="password" placeholder="Repeat Password"
-                        name="password-repeat" id="password-repeat" required>
-                    <label for="firstname"><b>First Name</b></label>
-                    <input type="text" placeholder="First Name"
-                        name="firstname" id="firstname">
-
-                    <label for="lastname"><b>Last Name</b></label>
-                    <input type="text" placeholder="Last Name"
-                        name="lastname" id="lastname">
-
-                    <label for="plan"><b>Choose plan:</b></label>
-                    <select name="plan" id="plan">
-                        <option value="free" selected>free</option>
-                        <option value="premium">premium</option>
-                        <option value="business">business</option>
-                    </select>
-
+                        <label for="email"><b>Email</b><span
+                                class="required">*</span></label> </p>
+                    <p>
+                        <input type="text" placeholder="Enter Email"
+                            name="email"
+                            id="email" required>
+                    </p>
+                    <p>
+                        <label for="password"><b>Password</b></label> </p>
+                    <p>
+                        <input type="password" placeholder="Enter Password"
+                            name="password"
+                            id="password" required>
+                    </p>
+                    <p>
+                        <label for="password-repeat"><b>Repeat Password</b></label>
+                    </p>
+                    <p>
+                        <input type="password" placeholder="Repeat Password"
+                            name="password-repeat" id="password-repeat"
+                            required>
+                    </p>
+                    <p>
+                        <label for="firstname"><b>First Name</b></label> </p>
+                    <p>
+                        <input type="text" placeholder="First Name"
+                            name="firstname" id="firstname">
+                    </p>
+                    <p>
+                        <label for="lastname"><b>Last Name</b></label> </p>
+                    <p>
+                        <input type="text" placeholder="Last Name"
+                            name="lastname" id="lastname">
+                    </p>
+                    <p>
+                        <label for="plan"><b>Choose plan:</b></label> </p>
+                    <p>
+                        <select name="plan" id="plan">
+                            <option value="free" selected>free</option>
+                            <option value="premium">premium</option>
+                            <option value="business">business</option>
+                        </select>
+                    </p>
                     <button type="submit" class="registerbtn">Register</button>
                 </div>
                 <div class="container signin">
-                    <p>Already have an account? <a href="#">Sign in</a>.</p>
+                    <p>Already have an account? <a href="{{ url_for('login_get')
+                            }}">Sign in</a>.</p>
                 </div>
             </form>
         </div>

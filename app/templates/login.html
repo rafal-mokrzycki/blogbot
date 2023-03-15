@@ -11,7 +11,7 @@
     <body>
         <div class="ui container">
             <h1>
-                Register:
+                Sign in:
             </h1>
             <form action="/login" method="post">
                 <p>
@@ -26,6 +26,8 @@
                 </p>
                 <input type="submit" value="Submit">
             </form>
+            <p>Don't have an account yet? <a href="{{ url_for('register_get')
+                    }}">Register</a>.</p>
         </div>
 
     </body>
